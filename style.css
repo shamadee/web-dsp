@@ -1,0 +1,51 @@
+
+* {
+  font-family: "Verdana", sans-serif;
+  color: darkslategrey;
+  background-color: #EEE;
+}
+
+#statsContainer {
+  position: absolute;
+  /*border: 1px solid green;*/
+  left: 900px;
+  top: 75px;
+  bottom: 200;
+}
+
+#buttons {
+  position: absolute;
+  top: 75px;
+  left: 750px;
+  width: 100;
+}
+
+#buttons button {
+  color: white;
+  background-color: silver;
+  border: none;
+  width: 120;
+  height: 32;
+  padding: 10, 0, 10, 0;
+  margin-top: 5px;
+}
+
+#buttons button:hover {
+  background-color: darkslategray;
+}
+
+#jsButton {
+  color: white;
+  background-color: silver;
+  border: none;
+  width: 120;
+  height: 32;
+  padding: 10, 0, 10, 0;
+}
+#jsButton:hover {
+  background-color: red;
+}
+
+#js-container {
+  float: left;
+}

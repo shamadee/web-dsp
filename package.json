@@ -1,0 +1,36 @@
+{
+  "name": "load-wasm",
+  "version": "1.0.0",
+  "description": "This is a sample library using WebAssembly. To compile the C library download emscripten and run in terminal:",
+  "main": "test.js",
+  "scripts": {
+    "test": "npm run testCPP && npm run testJS",
+    "testCPP": "g++ ./test/test.cpp -o ./test/testCpp && ./test/testCpp",
+    "testJS": "mocha || true",
+    "start": "gulp",
+    "cpp": "echo \"compiling C/C++ to WASM\" && . ./compileWASM.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matzewagner/load-wasm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matzewagner/load-wasm/issues"
+  },
+  "homepage": "https://github.com/matzewagner/load-wasm#readme",
+  "dependencies": {
+    "express": "^4.15.0",
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "mocha": "^3.2.0",
+    "zombie": "^5.0.5"
+  }
+}

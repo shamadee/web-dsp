@@ -1,0 +1,39 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="Stylesheet" href="style.css" type="text/css">
+  <title>WASM Example</title>
+</head>
+<body>
+  <h1>WASM Example</h1>
+  <div id='wasm-container'>
+    <canvas id="c" width="640" height="360"></canvas>
+    <video id="v" controls="" loop="" autoplay="" style="display:none;"> -->
+      <source src="media/vid.mp4" type="video/mp4"/> 
+    </video>
+  </div>
+  <div id='js-container'>
+    <h1>JS Example</h1>
+    <canvas id="c2" width="640" height="360"></canvas>
+    <video id="v2" controls="" loop="" autoplay="" style="display:none;"> 
+      <source src="media/vid.mp4" type="video/mp4"/> 
+    </video>
+  </div>
+  <div id = "statsContainer">
+    <h2>Speed Stats</h2>
+    <p id="avg"></p>
+    <div id = "stats">Loading..</div>
+    <h3>Frame Rate. WASM = Green; JS = Blue;</h3>
+    <canvas id = "statsCanvas"></canvas>
+    <button id="jsButton" onclick="disableJS()">Disable Javascript</button>
+  </div>
+  </br>
+  <script type="text/javascript" src="smoothie.js"></script>
+  <script src='./lib/webdsp.js'></script>
+  <script src='demo.js'></script>
+</body>
+</html>
+
+<!--Build math.c using 
+
+emcc math.c -Os -s WASM=1 -s SIDE_MODULE=1 -o math.wasm-->
