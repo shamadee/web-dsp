@@ -3,11 +3,11 @@
 
 webDSP is a collection of highly performant algorithms, which are designed to be building blocks for web applications that aim to operate on media data. The methods are written in C++ and compiled to WASM using Emscripten.<br>
 Proper loading of the module accross different browsers is ensured by inserting a custom event listener into the WASM module (something that is currently lacking in WebAssembly).<br>
-All available methods have JavaScript fallback functions, which can execute in environments that do not support WebAssembly.
+All available methods have JavaScript fallback functions, which are automatically exported with the module for environments that do not support WebAssembly.
 
 
 ### Install
-Drop the 'lib' folder in to your project and load the JS  library in a script tag
+Drop the 'lib' folder into your project and load the JS  library in a script tag
 ```html
 <script src = '/lib/webdsp.js' type = 'text/javascript'>
 ```
@@ -19,13 +19,12 @@ Use jsFallback() in the catch block to handle browsers that don't support .wasm
 var webdsp = {};
 loadWASM().then(module => {
   webdsp = module;
-}).catch(err => {
-  jsFallback();
-}).then(() => {
   // things to execute on page load only after module is loaded
-})
+});
 ```
-
+Note that since the WebAssembly module needs to be loaded with an http request (fetch) under the hood, the files need to come from a server, as Google Chrome does not support local file access via http from the client side. In Firefox, it is to load the module without a server.
+<br>
+<br>
 After loading, a WebAssembly method can be called with plain JS:
 ```javascript
 pixels = context.getImageData(0,0,width,height);
@@ -33,6 +32,7 @@ button.addEventListener('click', () => {
   webdsp.invert(pixels);
 });
 ```
+
 ### Video and Image Filter Methods
 These modular filters can execute on an array of RGBA pixel data: <br>
 <br>
@@ -42,7 +42,7 @@ These modular filters can execute on an array of RGBA pixel data: <br>
 `webdsp.noise(data)` <br>
 `webdsp.sobelFilter(data, width, height, invert=false)` <br>
 `webdsp.convFilter(pixelData, width, height, kernel, divisor, bias=0, count=1)` <br>
-`webdsp.multiFilter(pixelData, width, filterType, mag, multiplier, adj)` <br>
+`webdsp.multiFilter(pixelData, width, filterType, mag, multiplier, adjacentgit )` <br>
 
 Filter templates: <br>
 
@@ -50,7 +50,7 @@ Filter templates: <br>
 `webdsp.analogTV(pixels.data, width)` <br>
 `webdsp.emboss(pixels.data, width)` <br>
 `webdsp.blur(pixels.data, width, height)` <br>
-`webdsp.sharpen(pixels.data, width, height)); bre` <br>
+`webdsp.sharpen(pixels.data, width, height))` <br>
 `webdsp.strongSharpen(pixels.data, width, height)` <br>
 `webdsp.clarity(pixels.data, width, height)` <br>
 `webdsp.goodMorning(pixels.data, width, height)` <br>
