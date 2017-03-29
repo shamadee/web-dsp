@@ -36,41 +36,41 @@ button.addEventListener('click', () => {
 ### Video and Image Filter Methods
 These modular filters can execute on an array of RGBA pixel data: <br>
 <br>
-`webdsp.grayScale(data)` <br>
-`webdsp.brighten(data)` <br>
-`webdsp.invert(data)` <br>
-`webdsp.noise(data)` <br>
-`webdsp.sobelFilter(data, width, height, invert=false)` <br>
+`webdsp.grayScale(pixelData)` <br>
+`webdsp.brighten(pixelData)` <br>
+`webdsp.invert(pixelData)` <br>
+`webdsp.noise(pixelData)` <br>
+`webdsp.sobelFilter(pixelData, width, height, invert=false)` <br>
 `webdsp.convFilter(pixelData, width, height, kernel, divisor, bias=0, count=1)` <br>
 `webdsp.multiFilter(pixelData, width, filterType, mag, multiplier, adjacentgit )` <br>
 
 Filter templates: <br>
 
-`webdsp.sunset(pixels.data, width)` <br>
-`webdsp.analogTV(pixels.data, width)` <br>
-`webdsp.emboss(pixels.data, width)` <br>
-`webdsp.blur(pixels.data, width, height)` <br>
-`webdsp.sharpen(pixels.data, width, height))` <br>
-`webdsp.strongSharpen(pixels.data, width, height)` <br>
-`webdsp.clarity(pixels.data, width, height)` <br>
-`webdsp.goodMorning(pixels.data, width, height)` <br>
-`webdsp.acid(pixels.data, width, height)` <br>
-`webdsp.urple(pixels.data, width)` <br>
-`webdsp.forest(pixels.data, width)` <br>
-`webdsp.romance(pixels.data, width)` <br>
-`webdsp.hippo(pixels.data, width)` <br>
-`webdsp.longhorn(pixels.data, width)` <br>
-`webdsp.underground(pixels.data, width)` <br>
-`webdsp.rooster(pixels.data, width)` <br>
-`webdsp.mist(pixels.data, width)` <br>
-`webdsp.tingle(pixels.data, width)` <br>
-`webdsp.bacteria(pixels.data, width)` <br>
-`webdsp.dewdrops(pixels.data, width, height)` <br>
-`webdsp.destruction(pixels.data, width, height)` <br>
-`webdsp.hulk(pixels.data, width)` <br>
-`webdsp.ghost(pixels.data, width)` <br>
-`webdsp.twisted(pixels.data, width)` <br>
-`webdsp.security(pixels.data, width)` <br>
+`webdsp.sunset(pixelData, width)` <br>
+`webdsp.analogTV(pixelData, width)` <br>
+`webdsp.emboss(pixelData, width)` <br>
+`webdsp.blur(pixelData, width, height)` <br>
+`webdsp.sharpen(pixelData, width, height))` <br>
+`webdsp.strongSharpen(pixelData, width, height)` <br>
+`webdsp.clarity(pixelData, width, height)` <br>
+`webdsp.goodMorning(pixelData, width, height)` <br>
+`webdsp.acid(pixelData, width, height)` <br>
+`webdsp.urple(pixelData, width)` <br>
+`webdsp.forest(pixelData, width)` <br>
+`webdsp.romance(pixelData, width)` <br>
+`webdsp.hippo(pixelData, width)` <br>
+`webdsp.longhorn(pixelData, width)` <br>
+`webdsp.underground(pixelData, width)` <br>
+`webdsp.rooster(pixelData, width)` <br>
+`webdsp.mist(pixelData, width)` <br>
+`webdsp.tingle(pixelData, width)` <br>
+`webdsp.bacteria(pixelData, width)` <br>
+`webdsp.dewdrops(pixelData, width, height)` <br>
+`webdsp.destruction(pixelData, width, height)` <br>
+`webdsp.hulk(pixelData, width)` <br>
+`webdsp.ghost(pixelData, width)` <br>
+`webdsp.twisted(pixelData, width)` <br>
+`webdsp.security(pixelData, width)` <br>
 
 ### TODO:
 
