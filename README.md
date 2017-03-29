@@ -22,7 +22,7 @@ loadWASM().then(module => {
   // things to execute on page load only after module is loaded
 });
 ```
-Note that since the WebAssembly module needs to be loaded with an http request (fetch) under the hood, for Google Chrome the files need to come from a server, as Chrome does not support local file access via http from the client side. In Firefox, it is to load the module without a server.
+Note that since the WebAssembly module needs to be loaded with an http request (fetch) under the hood, for Google Chrome the files need to come from a server, as Chrome does not support local file access via http from the client side. In Firefox, it ispossible to load the module without a server.
 <br>
 <br>
 After loading, a WebAssembly method can be called with plain JS:
