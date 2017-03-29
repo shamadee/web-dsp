@@ -7,7 +7,8 @@ All available methods have JavaScript fallback functions, which are automaticall
 
 
 ### Install
-Drop the 'lib' folder into your project and load the JS  library in a script tag
+
+Clone this repo and drop the 'lib' folder into your project and load the JS  library in a script tag. You can also get the module via `npm install web-dsp`, which comes with a built-in npm executable (`get-dsp`), which will copy the lib folder into your project directory.
 ```html
 <script src = '/lib/webdsp.js' type = 'text/javascript'>
 ```
