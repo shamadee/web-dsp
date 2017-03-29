@@ -1,6 +1,6 @@
 {
   "name": "web-dsp",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "A dsp library for the web, written with WebAssembly",
   "main": "test.js",
   "scripts": {
@@ -8,6 +8,9 @@
     "testCPP": "g++ ./test/test.cpp -o ./test/testCpp && ./test/testCpp",
     "testJS": "mocha || true",
     "compile": "echo \"compiling C/C++ to WASM\" && . ./compileWASM.sh"
+  },
+  "bin": {
+    "get-dsp": "./bin/get-dsp.js"
   },
   "repository": {
     "type": "git",
