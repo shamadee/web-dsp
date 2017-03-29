@@ -24,7 +24,7 @@ gulp.task('browser-sync', ['recompile'], () => {
   });
 });
 
-gulp.watch('wewbdsp.cpp', ['recompile']);
+gulp.watch('cpp/webdsp.cpp', ['recompile']);
 
 gulp.watch(['demo.js', 'webdsp.js', 'index.html', 'style.css', 'compileWASM.sh'], () => {
   bs.reload();

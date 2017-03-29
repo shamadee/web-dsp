@@ -3,6 +3,7 @@
   font-family: "Verdana", sans-serif;
   color: darkslategrey;
   background-color: #EEE;
+  margin-left: 10px;
 }
 
 #statsContainer {
@@ -34,18 +35,22 @@
   background-color: darkslategray;
 }
 
-#jsButton {
+#jsButton, #jsCanvas, #playButton, #loopButton {
   color: white;
   background-color: silver;
   border: none;
   width: 120;
   height: 32;
   padding: 10, 0, 10, 0;
+  margin-top: 5px;
+  display: block;
 }
 #jsButton:hover {
   background-color: red;
 }
-
+#stats-canvas {
+  display: inline;
+}
 #js-container {
   float: left;
 }

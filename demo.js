@@ -1,5 +1,7 @@
-let m = {};
+let wam;
 let jsActive = true;
+let jsCanvas = true;
+let playing = true;
 let filter = 'Normal', prevFilter;
 let t0, t1 = Infinity, t2, t3 = Infinity, line1, line2, perf1, perf2, perfStr1, perfStr2, avg1, avg2, wasmStats, jsStats, percent=0;
 let counter=0, sum1=0, sum2=0;
@@ -8,10 +10,10 @@ let cw, cw2, ch, ch2;
 let speedDiv = document.getElementsByTagName('h2')[0];
 let avgDisplay = document.getElementById('avg');
 loadWASM()
-  .then(cMath => {
-    m = cMath;
-}).catch((obj) => {
-  jsFallback();
+  .then(module => {
+    wam = module;
+}).catch((err) => {
+  console.log('Error in fetching module: ', err);
 }).then(() => {
     window.onload = (() => { 
       createStats();
@@ -26,6 +28,19 @@ function disableJS() {
   else document.getElementById('jsButton').innerHTML = 'Disable JavaScript';
 }
 
+function disableJsCanvas() {
+  jsCanvas = !jsCanvas;
+  if (jsCanvas) {
+    document.getElementById('jsCanvas').innerHTML = 'Hide JS Canvas';
+    document.getElementById('jsCanvasHeading').style.visibility = "visible";
+    document.getElementById('c2').style.visibility = "visible";
+  }
+  else {
+    document.getElementById('jsCanvas').innerHTML = 'Show JS Canvas';
+    document.getElementById('jsCanvasHeading').style.visibility = "hidden";
+    document.getElementById('c2').style.visibility = "hidden";
+  }
+}
 //wasm video
 var vid = document.getElementById('v');
 var canvas = document.getElementById('c');
@@ -51,20 +66,56 @@ vid2.addEventListener("loadeddata", function() {
 });
 
 function draw() {
+  if (vid.paused) return false;
   context.drawImage(vid, 0, 0);
   // console.log('check', vid, context);
   pixels = context.getImageData(0, 0, vid.videoWidth, vid.videoHeight);
   if (filter !== 'Normal') {
     t0 = performance.now();
     setPixels(filter, 'wasm');
+    //doublePixels('Longhorn', 'Sunset'); - Order matters, kind of cool 
     t1 = performance.now();
   }
   context.putImageData(pixels, 0, 0);
-  requestAnimationFrame(draw); 
+  testFrame = requestAnimationFrame(draw); 
+}
+//case for when loop is off and video pauses at end without someone clicking play button
+vid.onpause = () => document.getElementById('playButton').innerHTML = 'Play';
+
+function playToggle () { //does both vids together
+  if (vid.paused) {
+    document.getElementById('playButton').innerHTML = 'Pause';
+    vid.play();
+    vid2.play()
+    draw();
+    draw2();
+  }
+  else {
+    document.getElementById('playButton').innerHTML = 'Play';
+    vid.pause()
+    vid2.pause()
+  }
+}
+function loopToggle () { //does both vids together
+  if (vid.hasAttribute('loop')){
+    document.getElementById('loopButton').innerHTML = 'Loop is Off';
+    vid.removeAttribute('loop')
+    vid2.removeAttribute('loop')
+  }
+  else {
+    if (vid.paused) {
+      playToggle();
+    }
+    document.getElementById('loopButton').innerHTML = 'Loop is On';
+    vid.setAttribute('loop', 'true')
+    vid2.setAttribute('loop', 'true')
+  }
+
 }
 
 //for javascript example
 function draw2() {
+  if (vid2.paused) return false;
   context2.drawImage(vid2, 0, 0);
   pixels2 = context2.getImageData(0, 0, vid2.videoWidth, vid2.videoHeight);
   if (filter !== 'Normal') {
@@ -100,8 +151,8 @@ function graphStats () {
       avg1 = sum1 / counter;
       avg2 = sum2 / counter;
       avgDisplay.innerText = `Average computation time WASM: ${avg1.toString().slice(0, 4)} ms, JS: ${avg2.toString().slice(0, 4)} ms`;
-      line1.append(new Date().getTime(), 1000 / perf1);
-      line2.append(new Date().getTime(), 1000 / perf2);
+      line1.append(new Date().getTime(), 500 / perf1);
+      line2.append(new Date().getTime(), 500 / perf2);
     }
     perfStr1 = perf1.toString().slice(0, 4);
     perfStr2 = perf2.toString().slice(0, 5);
@@ -110,7 +161,7 @@ function graphStats () {
     document.getElementById("stats").textContent = wasmStats + jsStats;
     percent = Math.round(((perf2 - perf1) / perf1) * 100);
   }
-  if (filter !== 'Normal') {
+  if (filter !== 'Normal' && jsActive) {
     speedDiv.innerText = `Speed Stats: WASM is currently ${percent}% faster than JS`;
   }
   else speedDiv.innerText = 'Speed Stats';
@@ -161,7 +212,7 @@ function createStats() {
 function addButtons (filtersArr) {
   let filters = ['Normal', 'Grayscale', 'Brighten', 'Invert', 'Noise', 'Sunset', 
                  'Analog TV', 'Emboss', 'Super Edge', 'Super Edge Inv',
-                 'Gaussian Blur', 'Sharpen', 'Sharpen2'];
+                 'Gaussian Blur', 'Sharpen', 'Uber Sharpen', 'Clarity', 'Good Morning', 'Acid', 'Urple', 'Forest', 'Romance', 'Hippo', 'Longhorn', 'Underground', 'Rooster', 'Mist', 'Tingle', 'Bacteria', 'Dewdrops', 'Color Destruction', 'Hulk Edge', 'Ghost', 'Twisted', 'Security'];
   let buttonDiv = document.createElement('div');
   buttonDiv.id = 'buttons';
   document.body.appendChild(buttonDiv);
@@ -180,57 +231,75 @@ function setPixels (filter, language) {
   if (language === 'wasm') {
     let kernel, divisor;
     switch (filter) {
-      case 'Grayscale': pixels.data.set(m.grayScale(pixels.data)); break;
-      case 'Brighten': pixels.data.set(m.brighten(pixels.data)); break;
-      case 'Invert': pixels.data.set(m.invert(pixels.data)); break;
-      case 'Noise': pixels.data.set(m.noise(pixels.data)); break;
-      case 'Sunset': pixels.data.set(m.edgeManip(pixels.data, 4, cw)); break;
-      case 'Analog TV': pixels.data.set(m.edgeManip(pixels.data, 7, cw)); break;
-      case 'Emboss': pixels.data.set(m.edgeManip(pixels.data, 1, cw)); break;
-      case 'Super Edge': pixels.data.set(m.sobelFilter(pixels.data, vid.videoWidth, vid.videoHeight)); break;
-      case 'Super Edge Inv': pixels.data.set(m.sobelFilter(pixels.data, vid.videoWidth, vid.videoHeight, true)); break;
-      case 'Gaussian Blur':
-        kernel = [1, 1, 1, 1, 1, 1, 1, 1, 1];
-        divisor = kernel.reduce((a, b) => a + b, 0) || 1;
-        // pixels.data.set(m.convFilter(pixels.data, kernel, 3, divisor, vid.videoWidth, vid.videoHeight)); 
-        pixels.data.set(m.convFilter(pixels.data, vid.videoWidth, vid.videoHeight, kernel, divisor, 0, 3));
-        break;
-      case 'Sharpen':
-        kernel = [-1, -1, -1, -1,  8, -1, -1, -1, -1];
-        divisor = kernel.reduce((a, b) => a + b, 0) || 1;
-        // pixels.data.set(m.convFilter(pixels.data, kernel, 1, divisor, vid.videoWidth, vid.videoHeight));
-        pixels.data.set(m.convFilter(pixels.data, vid.videoWidth, vid.videoHeight, kernel, divisor, 0, 1));
-        break;
-      case 'Sharpen2':
-        kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
-        divisor = kernel.reduce((a, b) => a + b, 0) || 1;
-        // pixels.data.set(m.convFilter(pixels.data, kernel, 1, 1.99, vid.videoWidth, vid.videoHeight));
-        pixels.data.set(m.convFilter(pixels.data, vid.videoWidth, vid.videoHeight, kernel, 1.99, 0, 1));
-        break;      
+      case 'Grayscale': pixels.data.set(wam.grayScale(pixels.data)); break;
+      case 'Brighten': pixels.data.set(wam.brighten(pixels.data)); break;
+      case 'Invert': pixels.data.set(wam.invert(pixels.data)); break;
+      case 'Noise': pixels.data.set(wam.noise(pixels.data)); break;
+      case 'Sunset': pixels.data.set(wam.sunset(pixels.data, cw)); break;
+      case 'Analog TV': pixels.data.set(wam.analogTV(pixels.data, cw)); break;
+      case 'Emboss': pixels.data.set(wam.emboss(pixels.data, cw)); break;
+      case 'Super Edge': pixels.data.set(wam.sobelFilter(pixels.data, cw, ch)); break;
+      case 'Super Edge Inv': pixels.data.set(wam.sobelFilter(pixels.data, cw, ch, true)); break;
+      case 'Gaussian Blur': pixels.data.set(wam.blur(pixels.data, cw, ch)); break;
+      case 'Sharpen': pixels.data.set(wam.sharpen(pixels.data, cw, ch)); break;      
+      case 'Uber Sharpen': pixels.data.set(wam.strongSharpen(pixels.data, cw, ch)); break;
+      case 'Clarity': pixels.data.set(wam.clarity(pixels.data, cw, ch)); break;
+      case 'Good Morning': pixels.data.set(wam.goodMorning(pixels.data, cw, ch)); break;
+      case 'Acid': pixels.data.set(wam.acid(pixels.data, cw, ch)); break;
+      case 'Urple': pixels.data.set(wam.urple(pixels.data, cw)); break;
+      case 'Forest': pixels.data.set(wam.forest(pixels.data, cw)); break;
+      case 'Romance': pixels.data.set(wam.romance(pixels.data, cw)); break;
+      case 'Hippo': pixels.data.set(wam.hippo(pixels.data, cw)); break;
+      case 'Longhorn': pixels.data.set(wam.longhorn(pixels.data, cw)); break;
+      case 'Underground': pixels.data.set(wam.underground(pixels.data, cw)); break;
+      case 'Rooster': pixels.data.set(wam.rooster(pixels.data, cw)); break;
+      case 'Mist': pixels.data.set(wam.mist(pixels.data, cw)); break;
+      case 'Tingle': pixels.data.set(wam.tingle(pixels.data, cw)); break;
+      case 'Bacteria': pixels.data.set(wam.bacteria(pixels.data, cw)); break;
+      case 'Dewdrops': pixels.data.set(wam.dewdrops(pixels.data, cw, ch)); break;
+      case 'Color Destruction': pixels.data.set(wam.destruction(pixels.data, cw, ch)); break;
+      case 'Hulk Edge': pixels.data.set(wam.hulk(pixels.data, cw)); break;
+      case 'Ghost': pixels.data.set(wam.ghost(pixels.data, cw)); break;
+      case 'Twisted': pixels.data.set(wam.twisted(pixels.data, cw)); break;
+      case 'Security': pixels.data.set(wam.security(pixels.data, cw)); break;
     }
   } else if (jsActive) {
     switch (filter) {
-      case 'Grayscale': pixels2.data.set(jsGrayScale(pixels2.data)); break;
-      case 'Brighten': pixels2.data.set(jsBrighten(pixels2.data)); break;
-      case 'Invert': pixels2.data.set(jsInvert(pixels2.data)); break;
-      case 'Noise': pixels2.data.set(jsNoise(pixels2.data)); break;
-      case 'Sunset': pixels2.data.set(jsEdgeManip(pixels2.data, 4, cw2)); break;
-      case 'Analog TV': pixels2.data.set(jsEdgeManip(pixels2.data, 7, cw2)); break;
-      case 'Emboss': pixels2.data.set(jsEdgeManip(pixels2.data, 1, cw2)); break;
-      case 'Super Edge': pixels2.data.set(jsConvFilter(pixels2.data, vid2.videoWidth, vid2.videoHeight)); break;
-      case 'Super Edge Inv': pixels2.data.set(jsConvFilter(pixels2.data, vid2.videoWidth, vid2.videoHeight, true)); break;
-      case 'Gaussian Blur': 
-        kernel = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
-        pixels2.data.set(jsMatrixConvolution(pixels2.data, vid2.videoWidth, vid2.videoHeight, kernel, 9, 0, 3));
-        break;
-      case 'Sharpen':
-        kernel = [[-1, -1, -1], [-1,  8, -1], [-1, -1, -1]];
-        pixels2.data.set(jsMatrixConvolution(pixels2.data, vid2.videoWidth, vid2.videoHeight, kernel, 1, 0, 1));
-        break;
-      case 'Sharpen2':
-        kernel = [[0, -1, 0], [-1, 5, -1], [0, -1, 0]];
-        pixels2.data.set(jsMatrixConvolution(pixels2.data, vid2.videoWidth, vid2.videoHeight, kernel, 1.99, 0, 1));
-        break;
+      case 'Grayscale': pixels2.data.set(js_grayScale(pixels2.data)); break;
+      case 'Brighten': pixels2.data.set(js_brighten(pixels2.data)); break;
+      case 'Invert': pixels2.data.set(js_invert(pixels2.data)); break;
+      case 'Noise': pixels2.data.set(js_noise(pixels2.data)); break;
+      case 'Sunset': pixels2.data.set(js_sunset(pixels2.data, cw2)); break;
+      case 'Analog TV': pixels2.data.set(js_analog(pixels2.data, cw2)); break;
+      case 'Emboss': pixels2.data.set(js_emboss(pixels2.data, cw2)); break;
+      case 'Super Edge': pixels2.data.set(js_sobelFilter(pixels2.data, cw2, ch2)); break;
+      case 'Super Edge Inv': pixels2.data.set(js_sobelFilter(pixels2.data, cw2, ch2, true)); break;
+      case 'Gaussian Blur': pixels2.data.set(js_blur(pixels2.data, cw2, ch2));break;
+      case 'Sharpen': pixels2.data.set(js_sharpen(pixels2.data, cw2, ch2)); break;
+      case 'Uber Sharpen': pixels2.data.set(js_strongSharpen(pixels2.data, cw2, ch2)); break;
+      case 'Clarity': pixels2.data.set(js_clarity(pixels2.data, cw2, ch2)); break;
+      case 'Good Morning': pixels2.data.set(js_goodMorning(pixels2.data, cw2, ch2)); break;
+      case 'Acid': pixels2.data.set(js_acid(pixels2.data, cw2, ch2)); break;
+      case 'Urple': pixels2.data.set(js_urple(pixels2.data, cw2)); break;
+      case 'Forest': pixels2.data.set(js_forest(pixels2.data, cw2)); break;
+      case 'Romance': pixels2.data.set(js_romance(pixels2.data, cw2)); break;
+      case 'Hippo': pixels2.data.set(js_hippo(pixels2.data, cw2)); break;
+      case 'Longhorn': pixels2.data.set(js_longhorn(pixels2.data, cw2)); break;
+      case 'Underground': pixels2.data.set(js_underground(pixels2.data, cw2)); break;
+      case 'Rooster': pixels2.data.set(js_rooster(pixels2.data, cw2)); break;
+      case 'Mist': pixels2.data.set(js_mist(pixels2.data, cw2)); break;
+      case 'Tingle': pixels2.data.set(js_tingle(pixels2.data, cw2)); break;
+      case 'Bacteria': pixels2.data.set(js_bacteria(pixels2.data, cw2)); break;
+      case 'Dewdrops': pixels2.data.set(js_dewdrops(pixels2.data, cw2, ch2)); break;
+      case 'Color Destruction': pixels2.data.set(js_destruction(pixels2.data, cw2, ch2)); break;
+      case 'Hulk Edge': pixels2.data.set(js_hulk(pixels2.data, cw2)); break;
+      case 'Ghost': pixels2.data.set(js_ghost(pixels2.data, cw2)); break;
+      case 'Twisted': pixels2.data.set(js_twisted(pixels2.data, cw2)); break;
+      case 'Security': pixels2.data.set(js_security(pixels2.data, cw2)); break;
     }
   }
+}
+function doublePixels (filter1, filter2) {
+  setPixels(filter1, 'wasm');
+  setPixels(filter2, 'wasm');
 }

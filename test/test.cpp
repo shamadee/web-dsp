@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <iostream>
 #include "./lib/catch.hpp"
-#include "../math.cpp"
+#include "../cpp/webdsp.cpp"
 
 TEST_CASE("Testing simple doubler function", "[doubler]") {
 

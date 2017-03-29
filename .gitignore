@@ -1,2 +1,10 @@
 node_modules/
 media/
+demo.js
+gulpfile.js
+index.html
+server.js
+smoothie.js
+style.css
+.DS_Store
+cpp/dft.cpp
