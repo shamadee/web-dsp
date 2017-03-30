@@ -5,6 +5,9 @@ webDSP is a collection of highly performant algorithms, which are designed to be
 Proper loading of the module accross different browsers is ensured by inserting a custom event listener into the WASM module (something that is currently lacking in WebAssembly).<br>
 All available methods have JavaScript fallback functions, which are automatically exported with the module for environments that do not support WebAssembly.
 
+### Demo
+
+Find a demo video editor built using the web-dsp library http://tiny.cc/webdsp. The repo for the demo library is here https://github.com/shamadee/web-dsp-demo
 
 ### Install
 
