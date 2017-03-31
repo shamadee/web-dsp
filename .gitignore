@@ -9,3 +9,4 @@ style.css
 .DS_Store
 cpp/dft.cpp
 settings.json
+.vscode/
