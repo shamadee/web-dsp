@@ -7,7 +7,8 @@ All available methods have JavaScript fallback functions, which are automaticall
 
 ### Demo & Starter Kit
 
-Find a demo video editor built using the web-dsp library http://tiny.cc/webdsp. The repo for the demo library is here https://github.com/shamadee/web-dsp-demo.  For a starter WebAssembly work environment to start building your own WebAssembly modules, please see our npm package https://www.npmjs.com/package/wasm-init
+See a demo video editor built using the web-dsp library here: [http://tiny.cc/webdsp](http://tiny.cc/webdsp). The repo for the demo library is here [https://github.com/shamadee/web-dsp-demo](https://github.com/shamadee/web-dsp-demo). <br>
+For a starter WebAssembly work environment to start building your own WebAssembly modules, please see our npm package [https://www.npmjs.com/package/wasm-init](https://www.npmjs.com/package/wasm-init)
 
 ### Install
 
@@ -80,3 +81,6 @@ Filter templates: <br>
 
 The following filter fallback implementations need to be properly matched with their C++ counterparts: <br>
 underground, rooster, mist, kaleidoscope, bacteria, hulk edge, ghost, twisted
+
+
+### Collaborators: Deep Pulusani, Shahrod Khalkhali, Matthias Wagner 
