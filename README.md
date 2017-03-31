@@ -1,10 +1,13 @@
-
+![webDSP Logo](/images/webdsplogo.png)
 ## A client-side DSP library utilizing the power of WebAssembly (.wasm)
 
 webDSP is a collection of highly performant algorithms, which are designed to be building blocks for web applications that aim to operate on media data. The methods are written in C++ and compiled to WASM using Emscripten.<br>
 Proper loading of the module accross different browsers is ensured by inserting a custom event listener into the WASM module (something that is currently lacking in WebAssembly).<br>
 All available methods have JavaScript fallback functions, which are automatically exported with the module for environments that do not support WebAssembly.
 
+### Demo & Starter Kit
+
+Find a demo video editor built using the web-dsp library http://tiny.cc/webdsp. The repo for the demo library is here https://github.com/shamadee/web-dsp-demo.  For a starter WebAssembly work environment to start building your own WebAssembly modules, please see our npm package https://www.npmjs.com/package/wasm-init
 
 ### Install
 
