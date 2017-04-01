@@ -1,4 +1,5 @@
 ![webDSP Logo](/images/webdsplogo.png)
+<br>
 ## A client-side DSP library utilizing the power of WebAssembly (.wasm)
 
 webDSP is a collection of highly performant algorithms, which are designed to be building blocks for web applications that aim to operate on media data. The methods are written in C++ and compiled to WASM using Emscripten.<br>
@@ -83,4 +84,4 @@ The following filter fallback implementations need to be properly matched with t
 underground, rooster, mist, kaleidoscope, bacteria, hulk edge, ghost, twisted
 
 
-### Collaborators: Deep Pulusani, Shahrod Khalkhali, Matthias Wagner 
+**Collaborators**: [Deep Pulusani](https://github.com/sdeep27), [Shahrod Khalkhali](https://github.com/shahrodkh), [Matthias Wagner](https://github.com/matzewagner)
