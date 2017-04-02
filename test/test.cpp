@@ -49,3 +49,15 @@ TEST_CASE("Testing brighten function", "[brighten]") {
   }
 }
 
+TEST_CASE("Testing invert function", "[invert]") {
+  int len = 4;
+  int max = 255;
+  unsigned char data[] = {1, 2, 3, 255 };
+  unsigned char out[] = {254, 253, 252, 255};
+  invert(data, len);
+  SECTION("R G B should be inverted") {
+    for (int i = 0; i < len; i++) {
+      REQUIRE( data[i] == out[i] );
+    }
+  }
+}
