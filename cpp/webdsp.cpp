@@ -27,9 +27,9 @@ extern "C" {
   }
   void brighten (unsigned char* data, int len, int brightness) {
     for (int i = 0; i < len; i += 4) {
-      data[i] + data[i] + brightness > 255 ? 255 : data[i] += brightness;
-      data[i+1] + data[i+1] + brightness > 255 ? 255 : data[i+1] += brightness;
-      data[i+2] + data[i+2] + brightness > 255 ? 255 : data[i+2] += brightness;
+      data[i]   + brightness > 255 ? 255 : data[i]   += brightness;
+      data[i+1] + brightness > 255 ? 255 : data[i+1] += brightness;
+      data[i+2] + brightness > 255 ? 255 : data[i+2] += brightness;
     }
   }
   void invert (unsigned char* data, int len) {
