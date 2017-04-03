@@ -49,7 +49,7 @@ These modular filters can execute on an array of RGBA pixel data: <br>
 `webdsp.noise(pixelData)` <br>
 `webdsp.sobelFilter(pixelData, width, height, invert=false)` <br>
 `webdsp.convFilter(pixelData, width, height, kernel, divisor, bias=0, count=1)` <br>
-`webdsp.multiFilter(pixelData, width, filterType, mag, multiplier, adjacentgit )` <br>
+`webdsp.multiFilter(pixelData, width, filterType, mag, multiplier, adjacent)` <br>
 
 Filter templates: <br>
 
