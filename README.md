@@ -1,4 +1,5 @@
 ![webDSP Logo](/images/webdsplogo.png)
+<br>
 ## A client-side DSP library utilizing the power of WebAssembly (.wasm)
 
 WebDSP is a collection of highly performant algorithms, which are designed to be building blocks for web applications that aim to operate on media data. The methods are written in C++ and compiled to WASM, and exposed as simple vanilla Javascript functions developers can run on the client side. <br>
@@ -86,3 +87,4 @@ The following filter fallback implementations need to be properly matched with t
 Cache .wasm module on client
 
 ### Collaborators: [Deep Pulusani](https://github.com/sdeep27), [Shahrod Khalkhali](https://github.com/shahrodkh), [Matthias Wagner](https://github.com/matzewagner) 
+
