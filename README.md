@@ -2,18 +2,19 @@
 <br>
 ## A client-side DSP library utilizing the power of WebAssembly (.wasm)
 
-webDSP is a collection of highly performant algorithms, which are designed to be building blocks for web applications that aim to operate on media data. The methods are written in C++ and compiled to WASM using Emscripten.<br>
-Proper loading of the module accross different browsers is ensured by inserting a custom event listener into the WASM module (something that is currently lacking in WebAssembly).<br>
-All available methods have JavaScript fallback functions, which are automatically exported with the module for environments that do not support WebAssembly.
+WebDSP is a collection of highly performant algorithms, which are designed to be building blocks for web applications that aim to operate on media data. The methods are written in C++ and compiled to WASM, and exposed as simple vanilla Javascript functions developers can run on the client side. <br>
+<br>
+WebAssembly is very young, and this is the first .wasm based library designed to be dropped in to existing production level JS code bases.  With that in mind, there was an explicit goal to optimize and simplify how JS developers can load and use .wasm functionality.  Just as important, was our goal to lay the groundwork for future open source WebAssembly module developers. 
 
 ### Demo & Starter Kit
 
-See a demo video editor built using the web-dsp library here: [http://tiny.cc/webdsp](http://tiny.cc/webdsp). The repo for the demo library is here [https://github.com/shamadee/web-dsp-demo](https://github.com/shamadee/web-dsp-demo). <br>
-For a starter WebAssembly work environment to start building your own WebAssembly modules, please see our npm package [https://www.npmjs.com/package/wasm-init](https://www.npmjs.com/package/wasm-init)
+Check out the [demo video editor](http://tiny.cc/webdsp) and [corresponding repo](https://github.com/shamadee/web-dsp-demo).<br>
+
+To quickly start working with WebAssembly and to build your own modules, please see our started WebAssembly work environment you can npm install and launch [wasm-init](https://www.npmjs.com/package/wasm-init).
 
 ### Install
 
-Clone this repo and drop the 'lib' folder into your project and load the JS  library in a script tag. You can also get the module via `npm install web-dsp`, which comes with a built-in npm executable (`get-dsp`), which will copy the lib folder into your project directory.
+Clone this repo and drop only the 'lib' folder into your project. Simply load our library file in a script tag. You can also get the module via `npm install web-dsp`, which comes with a built-in npm executable (`get-dsp`), which will copy the lib folder into your project directory.
 ```html
 <script src = '/lib/webdsp.js' type = 'text/javascript'>
 ```
@@ -28,14 +29,14 @@ loadWASM().then(module => {
   // things to execute on page load only after module is loaded
 });
 ```
-Note that since the WebAssembly module needs to be loaded with an http request (fetch) under the hood, for Google Chrome the files need to come from a server, as Chrome does not support local file access via http from the client side. In Firefox, it is possible to load the module without a server.
-<br>
+Note WebAssembly modules need to be loaded with an HTTP request (fetch). Chrome does not support local file access via HTTP, so the files must be loaded using a server. In Firefox, it is possible to load the module without a server as a plain HTML file. 
 <br>
 After loading, a WebAssembly method can be called with plain JS:
 ```javascript
+//get image data from canvas
 pixels = context.getImageData(0,0,width,height);
 button.addEventListener('click', () => {
-  webdsp.invert(pixels);
+  pixels.data.set(webdsp.invert(pixels.data));
 });
 ```
 
@@ -78,10 +79,12 @@ Filter templates: <br>
 `webdsp.twisted(pixelData, width)` <br>
 `webdsp.security(pixelData, width)` <br>
 
+For production level environments, it's important to note that all available methods have JavaScript fallback functions that are automatically exported with the module so older browsers can still run your code. However, note that the more intensive convolution and edge detection filters will run very slowly or hang the browser completely without WebAssembly support. 
+
 ### TODO:
 
-The following filter fallback implementations need to be properly matched with their C++ counterparts: <br>
-underground, rooster, mist, kaleidoscope, bacteria, hulk edge, ghost, twisted
+The following filter fallback implementations need to be properly matched with their C++ counterparts: underground, rooster, mist, kaleidoscope, bacteria, hulk edge, ghost, twisted. <br>
+Cache .wasm module on client
 
+### Collaborators: [Deep Pulusani](https://github.com/sdeep27), [Shahrod Khalkhali](https://github.com/shahrodkh), [Matthias Wagner](https://github.com/matzewagner) 
 
-**Collaborators**: [Deep Pulusani](https://github.com/sdeep27), [Shahrod Khalkhali](https://github.com/shahrodkh), [Matthias Wagner](https://github.com/matzewagner)
