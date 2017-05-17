@@ -10,3 +10,4 @@ style.css
 cpp/dft.cpp
 settings.json
 .vscode/
+test/testCpp
