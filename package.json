@@ -7,7 +7,7 @@
     "test": "npm run testCPP",
     "testCPP": "g++ ./test/test.cpp -o ./test/testCpp && ./test/testCpp",
     "testJS": "mocha || true",
-    "compile": "echo \"compiling C/C++ to WASM\" && . ./compileWASM.sh"
+    "compile": "echo \"compiling C/C++ to WASM\" && node compile.js"
   },
   "bin": {
     "get-dsp": "./bin/get-dsp.js"
